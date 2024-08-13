@@ -4,14 +4,17 @@ from typing import Dict, List, Optional, Tuple
 
 import torch
 import torchvision.transforms as T
+from PIL.Image import Image
 from torch import Tensor
 from torchvision.transforms import functional as F, InterpolationMode
+
+__affine_transforms__ = ["ShearX", "ShearY", "TranslateX", "TranslateY", "Rotate"]
 
 
 def _apply_op(
         img: Tensor, op_name: str, magnitude: float, interpolation: InterpolationMode, fill: Optional[List[float]]
 ):
-    transform = None;
+    transform = None
 
     if op_name == "ShearX":
         # magnitude should be arctan(magnitude)
@@ -253,7 +256,7 @@ class AutoAugmentModel(torch.nn.Module):
 
         return policy_id, probs, signs
 
-    def forward(self, img: Tensor) -> Tensor:
+    def forward(self, img: Image | Tensor) -> tuple[Image | Tensor, list]:
         """
             img (PIL Image or Tensor): Image to be transformed.
 
