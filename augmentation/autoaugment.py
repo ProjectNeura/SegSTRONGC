@@ -7,9 +7,6 @@ import torchvision.transforms as T
 from torch import Tensor
 from torchvision.transforms import functional as F, InterpolationMode
 
-__all__ = ["AutoAugmentPolicy", "AutoAugment", "RandAugment", "TrivialAugmentWide", "AugMix"]
-__affine_transforms__ = ["ShearX", "ShearY", "TranslateX", "TranslateY", "Rotate"]
-
 
 def _apply_op(
         img: Tensor, op_name: str, magnitude: float, interpolation: InterpolationMode, fill: Optional[List[float]]
