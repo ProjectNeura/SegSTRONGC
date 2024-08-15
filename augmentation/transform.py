@@ -1,9 +1,17 @@
 from abc import ABCMeta as _ABCMeta, abstractmethod as _abstractmethod
+from os.path import abspath as _abspath
+from random import randint as _randint
 
+from albumentations import Compose as _Compose, SafeRotate as _SafeRotate, RandomCrop as _RandomCrop, Resize as _Resize
+from cv2 import imread as _imread
 from typing_extensions import override as _override, Literal as _Literal
 
 from augmentation.computational import ndarray as _ndarray, zeros as _zeros, linspace as _linspace, full as _full, \
-    concatenate as _concatenate, ones as _ones, repeat as _repeat, array as _array, expand_dims as _expand_dims
+    concatenate as _concatenate, ones as _ones, repeat as _repeat, expand_dims as _expand_dims, \
+    array as _array
+
+_ASSETS_PATH: str = f"{_abspath(__file__)[:-12]}assets"
+_SMOKE_TEXTURE: _ndarray = _imread(f"{_ASSETS_PATH}/smoke.jpg")
 
 
 class TransformBase(object, metaclass=_ABCMeta):
@@ -30,6 +38,9 @@ class Smoke(TransformBase):
         if num_channels != 3:
             raise AttributeError("Channel error")
         r, h = width * .5, int(height * .5)
+        tex = _array(_Compose([
+            _RandomCrop(_randint(100, height), _randint(100, width)),
+            _SafeRotate(), _Resize(height, width)])(image=_SMOKE_TEXTURE, mask=_SMOKE_TEXTURE)["image"])
         smoke_mask = _zeros((height, width))
         for i in range(0, h, self._step):
             d = h - i
@@ -40,9 +51,11 @@ class Smoke(TransformBase):
             row = _concatenate((_zeros(num_zeros), _linspace(0, self._maximum, num_steps),
                                 _full(total_length - num_steps * 2, self._maximum),
                                 _linspace(self._maximum, 0, num_steps), _zeros(num_zeros)))
+            row += row * tex[i, :, 1] / 255
             if self._mode == "quadratic":
                 row **= 2
             smoke_mask[i] = row
         smoke_mask = _repeat(_expand_dims(smoke_mask, -1), 3, 2)
         smoke_mask += smoke_mask[::-1, :, :]
-        return img * (_ones((height, width, 3)) - smoke_mask) + smoke_mask * self._smoke_color
+        result = _array(img) * (_ones((height, width, 3)) - smoke_mask) + smoke_mask * self._smoke_color
+        return result if isinstance(result, _ndarray) else result.get()

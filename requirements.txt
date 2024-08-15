@@ -3,4 +3,4 @@ numpy
 opencv-python-headless
 pytorch
 torchvision
-Pillow
+rich
