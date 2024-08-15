@@ -83,8 +83,8 @@ class LowBrightness(TransformBase):
 
 class Blood(TransformBase):
     def __init__(self, n: int, root_range: tuple[float, float, float, float] = (0, 0, 1, 1),
-                 color: tuple[int, int, int] = (0, 0, 255), opacity: float = .5, infectiousness: float = .1,
-                 num_propagation_steps: int = 128) -> None:
+                 color: tuple[int, int, int] = (25, 17, 85), opacity: float = .5, infectiousness: float = .4,
+                 num_propagation_steps: int = 64) -> None:
         self._n: int = n
         self._root_range: tuple[float, float, float, float] = root_range
         self._color: _ndarray = _array(color)
