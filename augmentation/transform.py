@@ -25,7 +25,7 @@ class TransformBase(object, metaclass=_ABCMeta):
 
 class Smoke(TransformBase):
     def __init__(self, attenuation_factor: float = .2, mode: _Literal["linear", "quadratic"] = "linear",
-                 smoke_color: tuple[int, int, int] = (255, 255, 255), maximum: float = 1, step: int = 2) -> None:
+                 smoke_color: tuple[int, int, int] = (255, 255, 255), maximum: float = 1, step: int = 1) -> None:
         self._attenuation_factor: float = attenuation_factor
         self._mode: _Literal["linear", "quadratic"] = mode
         self._smoke_color: _ndarray = _array(smoke_color)
@@ -39,7 +39,7 @@ class Smoke(TransformBase):
             raise AttributeError("Channel error")
         r, h = width * .5, int(height * .5)
         tex = _array(_Compose([
-            _RandomCrop(_randint(100, height), _randint(100, width)),
+            _RandomCrop(_randint(int(height * .4), int(height * .9)), _randint(int(width * .4), int(width * .9))),
             _SafeRotate(), _Resize(height, width)])(image=_SMOKE_TEXTURE, mask=_SMOKE_TEXTURE)["image"])
         smoke_mask = _zeros((height, width))
         for i in range(0, h, self._step):
