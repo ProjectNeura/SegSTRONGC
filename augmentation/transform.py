@@ -24,6 +24,17 @@ class TransformBase(object, metaclass=_ABCMeta):
         return self.apply(img)
 
 
+class Compose(TransformBase):
+    def __init__(self, *transforms: TransformBase) -> None:
+        self._transforms: tuple[TransformBase, ...] = transforms
+
+    @_override
+    def apply(self, img: _ndarray) -> _ndarray:
+        for transform in self._transforms:
+            img = transform(img)
+        return img
+
+
 class Smoke(TransformBase):
     def __init__(self, attenuation_factor: float = .2, mode: _Literal["linear", "quadratic"] = "linear",
                  smoke_color: tuple[int, int, int] = (200, 200, 200), maximum: float = .7, step: int = 1) -> None:
