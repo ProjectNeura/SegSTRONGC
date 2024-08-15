@@ -6,7 +6,6 @@ from cv2 import imread as _imread
 from numpy import ndarray as _ndarray, load as _load
 from torch import Tensor as _Tensor, tensor as _tensor
 
-from augmentation.autoaugment import *
 from augmentation.transform import *
 
 
