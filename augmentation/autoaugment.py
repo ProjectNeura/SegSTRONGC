@@ -1,6 +1,7 @@
+from abc import ABCMeta as _ABCMeta, abstractmethod as _abstractmethod
 from random import choice as _choice
 
-from torch import tensor as _tensor
+from torch import tensor as _tensor, Tensor as _Tensor
 from torchvision.transforms.functional import rotate as _rotate, adjust_brightness as _adjust_brightness, \
     adjust_saturation as _adjust_saturation, adjust_contrast as _adjust_contrast, \
     adjust_sharpness as _adjust_sharpness, posterize as _posterize, solarize as _solarize, \
@@ -10,91 +11,100 @@ from augmentation.computational import npndarray as _npndarray, nparray as _npar
 from augmentation.transform import TransformBase, Compose
 
 
-class Rotate(TransformBase):
+class AutoAugmentTransform(TransformBase, metaclass=_ABCMeta):
+    @_abstractmethod
+    def apply_tensor(self, img: _Tensor) -> _Tensor:
+        raise NotImplementedError
+
+    def apply(self, img: _npndarray) -> _npndarray:
+        return _nparray(self.apply_tensor(_tensor(img.transpose(2, 1, 0)))).transpose(1, 2, 0)
+
+
+class Rotate(AutoAugmentTransform):
     def __init__(self, angle: float, p: float = 1) -> None:
         super().__init__(p)
         self._angle: float = angle
 
-    def apply(self, img: _npndarray) -> _npndarray:
-        return _nparray(_rotate(_tensor(img), self._angle))
+    def apply_tensor(self, img: _Tensor) -> _Tensor:
+        return _rotate(img, self._angle)
 
 
-class Brightness(TransformBase):
+class Brightness(AutoAugmentTransform):
     def __init__(self, brightness_factor: float, p: float = 1) -> None:
         super().__init__(p)
         self._brightness_factor: float = brightness_factor
 
-    def apply(self, img: _npndarray) -> _npndarray:
-        return _nparray(_adjust_brightness(_tensor(img), 1 + self._brightness_factor))
+    def apply_tensor(self, img: _Tensor) -> _Tensor:
+        return _adjust_brightness(img, 1 + self._brightness_factor)
 
 
-class Color(TransformBase):
+class Color(AutoAugmentTransform):
     def __init__(self, saturation_factor: float, p: float = 1) -> None:
         super().__init__(p)
         self._saturation_factor: float = saturation_factor
 
-    def apply(self, img: _npndarray) -> _npndarray:
-        return _nparray(_adjust_saturation(_tensor(img), 1 + self._saturation_factor))
+    def apply_tensor(self, img: _Tensor) -> _Tensor:
+        return _adjust_saturation(img, 1 + self._saturation_factor)
 
 
-class Contrast(TransformBase):
+class Contrast(AutoAugmentTransform):
     def __init__(self, contrast_factor: float, p: float = 1) -> None:
         super().__init__(p)
         self._contrast_factor: float = contrast_factor
 
-    def apply(self, img: _npndarray) -> _npndarray:
-        return _nparray(_adjust_contrast(_tensor(img), 1 + self._contrast_factor))
+    def apply_tensor(self, img: _Tensor) -> _Tensor:
+        return _adjust_contrast(img, 1 + self._contrast_factor)
 
 
-class Sharpness(TransformBase):
+class Sharpness(AutoAugmentTransform):
     def __init__(self, sharpness_factor: float, p: float = 1) -> None:
         super().__init__(p)
         self._sharpness_factor: float = sharpness_factor
 
-    def apply(self, img: _npndarray) -> _npndarray:
-        return _nparray(_adjust_sharpness(_tensor(img), 1 + self._sharpness_factor))
+    def apply_tensor(self, img: _Tensor) -> _Tensor:
+        return _adjust_sharpness(img, 1 + self._sharpness_factor)
 
 
-class Posterize(TransformBase):
+class Posterize(AutoAugmentTransform):
     def __init__(self, bits: int, p: float = 1) -> None:
         super().__init__(p)
         self._bits: int = bits
 
-    def apply(self, img: _npndarray) -> _npndarray:
-        return _nparray(_posterize(_tensor(img), self._bits))
+    def apply_tensor(self, img: _Tensor) -> _Tensor:
+        return _posterize(img, self._bits)
 
 
-class Solarize(TransformBase):
+class Solarize(AutoAugmentTransform):
     def __init__(self, threshold: float, p: float = 1) -> None:
         super().__init__(p)
         self._threshold: float = threshold
 
-    def apply(self, img: _npndarray) -> _npndarray:
-        return _nparray(_solarize(_tensor(img), self._threshold))
+    def apply_tensor(self, img: _Tensor) -> _Tensor:
+        return _solarize(img, self._threshold)
 
 
-class AutoContrast(TransformBase):
+class AutoContrast(AutoAugmentTransform):
     def __init__(self, p: float = 1) -> None:
         super().__init__(p)
 
-    def apply(self, img: _npndarray) -> _npndarray:
-        return _nparray(_autocontrast(_tensor(img)))
+    def apply_tensor(self, img: _Tensor) -> _Tensor:
+        return _autocontrast(img)
 
 
-class Equalize(TransformBase):
+class Equalize(AutoAugmentTransform):
     def __init__(self, p: float = 1) -> None:
         super().__init__(p)
 
-    def apply(self, img: _npndarray) -> _npndarray:
-        return _nparray(_equalize(_tensor(img)))
+    def apply_tensor(self, img: _Tensor) -> _Tensor:
+        return _equalize(img)
 
 
-class Invert(TransformBase):
+class Invert(AutoAugmentTransform):
     def __init__(self, p: float = 1) -> None:
         super().__init__(p)
 
-    def apply(self, img: _npndarray) -> _npndarray:
-        return _nparray(_invert(_tensor(img)))
+    def apply_tensor(self, img: _Tensor) -> _Tensor:
+        return _invert(img)
 
 
 _IMAGE_NET_POLICY: tuple[Compose, ...] = (
