@@ -39,6 +39,11 @@ class Compose(TransformBase):
         return img
 
 
+class Null(TransformBase):
+    def apply(self, img: _npndarray) -> _npndarray:
+        return img
+
+
 class Smoke(TransformBase):
     def __init__(self, attenuation_factor: float = .2, mode: _Literal["linear", "quadratic"] = "linear",
                  smoke_color: tuple[int, int, int] = (200, 200, 200), maximum: float = .7, step: int = 1,
