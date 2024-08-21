@@ -16,16 +16,20 @@ _SMOKE_TEXTURE: _npndarray = _imread(f"{_ASSETS_PATH}/smoke.jpg")
 
 
 class TransformBase(object, metaclass=_ABCMeta):
+    def __init__(self, p: float = 1) -> None:
+        self._p: float = p
+
     @_abstractmethod
     def apply(self, img: _npndarray) -> _npndarray:
         raise NotImplementedError
 
     def __call__(self, img: _npndarray) -> _npndarray:
-        return self.apply(img)
+        return self.apply(img) if _randint(0, 100) < self._p * 100 else img
 
 
 class Compose(TransformBase):
     def __init__(self, *transforms: TransformBase) -> None:
+        super().__init__()
         self._transforms: tuple[TransformBase, ...] = transforms
 
     @_override
@@ -37,7 +41,9 @@ class Compose(TransformBase):
 
 class Smoke(TransformBase):
     def __init__(self, attenuation_factor: float = .2, mode: _Literal["linear", "quadratic"] = "linear",
-                 smoke_color: tuple[int, int, int] = (200, 200, 200), maximum: float = .7, step: int = 1) -> None:
+                 smoke_color: tuple[int, int, int] = (200, 200, 200), maximum: float = .7, step: int = 1,
+                 p: float = 1) -> None:
+        super().__init__(p)
         self._attenuation_factor: float = attenuation_factor
         self._mode: _Literal["linear", "quadratic"] = mode
         self._smoke_color: _ndarray = _array(smoke_color)
@@ -73,7 +79,8 @@ class Smoke(TransformBase):
 
 class LowBrightness(TransformBase):
     def __init__(self, brightness_range: tuple[float, float] = (-.9, -.1),
-                 contrast_range: tuple[float, float] = (-0.2, 0.2)) -> None:
+                 contrast_range: tuple[float, float] = (-0.2, 0.2), p: float = 1) -> None:
+        super().__init__(p)
         self._transform: _RandomBrightnessContrast = _RandomBrightnessContrast(brightness_range, contrast_range, p=1)
 
     @_override
@@ -84,7 +91,8 @@ class LowBrightness(TransformBase):
 class Blood(TransformBase):
     def __init__(self, n: int, root_range: tuple[float, float, float, float] = (0, 0, 1, 1),
                  color: tuple[int, int, int] = (25, 17, 85), opacity: float = .5, infectiousness: float = .4,
-                 num_propagation_steps: int = 64) -> None:
+                 num_propagation_steps: int = 64, p: float = 1) -> None:
+        super().__init__(p)
         self._n: int = n
         self._root_range: tuple[float, float, float, float] = root_range
         self._color: _ndarray = _array(color)
