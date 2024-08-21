@@ -17,7 +17,7 @@ class AutoAugmentTransform(TransformBase, metaclass=_ABCMeta):
         raise NotImplementedError
 
     def apply(self, img: _npndarray) -> _npndarray:
-        return _nparray(self.apply_tensor(_tensor(img.transpose(2, 1, 0)))).transpose(1, 2, 0)
+        return _nparray(self.apply_tensor(_tensor(img.transpose(2, 0, 1)))).transpose(1, 2, 0)
 
 
 class Rotate(AutoAugmentTransform):
