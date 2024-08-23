@@ -33,7 +33,7 @@ def transfer(src: str, destination: str) -> None:
                             load(f"{src}/{i}/{j}/ground_truth/left/{n}.npy").astype(uint8))
                     serial += 1
                     copyfile(f"{src}/{i}/{j}/regular/right/{n}.png",
-                             f"{destination}/imagesTr/case_{(s := str(serial).zfill(3))}_0000.png")
+                             f"{destination}/imagesTr/case_{(s := str(serial).zfill(4))}_0000.png")
                     imwrite(f"{destination}/labelsTr/case_{s}.png",
                             load(f"{src}/{i}/{j}/ground_truth/right/{n}.npy").astype(uint8))
                     serial += 1
