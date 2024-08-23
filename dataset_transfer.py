@@ -1,9 +1,10 @@
 from os import makedirs, listdir
-from shutil import copyfile
 from os.path import exists
-from rich.progress import Progress
-from numpy import load
+from shutil import copyfile
+
 from cv2 import imwrite
+from numpy import load, uint8
+from rich.progress import Progress
 
 
 def check_or_create(path: str) -> None:
@@ -22,16 +23,20 @@ def transfer(src: str, destination: str) -> None:
     with Progress() as progress:
         task = progress.add_task("[white]Transferring...", total=3300)
         serial = 0
+        src = f"{src}/train"
         for i in listdir(src):
             for j in listdir(f"{src}/{i}"):
                 for n in range(300):
                     copyfile(f"{src}/{i}/{j}/regular/left/{n}.png",
-                             f"{destination}/imagesTr/{(serial := str(serial).zfill(3))}_0000.png")
-                    imwrite(f"{destination}/labelsTr/{serial}.png", load(f"{src}/{i}/{j}/ground_truth/left/{n}.npy"))
+                             f"{destination}/imagesTr/{(s := str(serial).zfill(3))}_0000.png")
+                    imwrite(f"{destination}/labelsTr/{s}.png",
+                            load(f"{src}/{i}/{j}/ground_truth/left/{n}.npy").astype(uint8))
                     serial += 1
                     copyfile(f"{src}/{i}/{j}/regular/right/{n}.png",
-                             f"{destination}/imagesTr/{(serial := str(serial).zfill(3))}_0000.png")
-                    imwrite(f"{destination}/labelsTr/{serial}.png", load(f"{src}/{i}/{j}/ground_truth/right/{n}.npy"))
+                             f"{destination}/imagesTr/{(s := str(serial).zfill(3))}_0000.png")
+                    imwrite(f"{destination}/labelsTr/{s}.png",
+                            load(f"{src}/{i}/{j}/ground_truth/right/{n}.npy").astype(uint8))
+                    serial += 1
                     progress.update(task, advance=1)
 
 
