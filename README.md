@@ -20,6 +20,14 @@ docker run --rm -v "F:/SharedDatasets/SegSTRONGC_release:/workspace/data" --gpus
 python data_transfer.py
 ```
 
+### Set Environment Variables
+
+```shell
+export nnUNet_raw=/workspace/data/nnUNet_raw
+export nnUNet_preprocessed=/workspace/data/nnUNet_preprocessed
+export nnUNet_results=/workspace/data/nnUNet_weights
+```
+
 ### Preprocess
 
 ```shell
