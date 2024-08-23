@@ -13,6 +13,8 @@ def check_or_create(path: str) -> None:
 
 
 def transfer(src: str, destination: str) -> None:
+    check_or_create(f"{destination}/nnUNet_preprocessed")
+    check_or_create(f"{destination}/nnUNet_weights")
     destination = f"{destination}/nnUNet_raw/Dataset001_SegSTRONG_C"
     check_or_create(destination)
     with open(f"{destination}/dataset.json", "w") as f:
