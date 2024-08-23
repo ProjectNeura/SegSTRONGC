@@ -5,7 +5,7 @@
 ### Build Docker Image
 
 ```shell
-docker build ./ -t segstrongc:projnura
+docker build --no-cache ./ -t segstrongc:projnura
 ```
 
 ### Create Docker Container
