@@ -17,7 +17,7 @@ def transfer(src: str, destination: str) -> None:
     check_or_create(destination)
     with open(f"{destination}/dataset.json", "w") as f:
         f.write("{\"channel_names\": {\"0\": \"red\", \"1\": \"green\", \"2\": \"blue\"}, "
-                "{\"labels\": {\"background\": 0, \"tool\": 1}, \"numTraining\": 6600, \"file_ending\": \".png\"}")
+                "\"labels\": {\"background\": 0, \"tool\": 1}, \"numTraining\": 6600, \"file_ending\": \".png\"}")
     check_or_create(f"{destination}/imagesTr")
     check_or_create(f"{destination}/labelsTr")
     with Progress() as progress:
