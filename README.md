@@ -11,7 +11,7 @@ docker build --no-cache ./ -t segstrongc:projnura
 ### Create Docker Container
 
 ```shell
-docker run --rm -v "F:/SharedDatasets/SegSTRONGC_release/SegSTRONGC_nnunet:/workspace/data" --gpus="device=0" -it segstrongc:projnura
+docker run --ipc=host --rm -v "F:/SharedDatasets/SegSTRONGC_release/SegSTRONGC_nnunet:/workspace/data" --gpus="device=0" -it segstrongc:projnura
 ```
 
 ### Transfer Data
