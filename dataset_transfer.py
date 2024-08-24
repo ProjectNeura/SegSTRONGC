@@ -30,7 +30,7 @@ def transfer(src: str, destination: str) -> None:
             for j in listdir(f"{src}/{i}"):
                 for n in range(300):
                     copyfile(f"{src}/{i}/{j}/regular/left/{n}.png",
-                             f"{destination}/imagesTr/case_{(s := str(serial).zfill(3))}_0000.png")
+                             f"{destination}/imagesTr/case_{(s := str(serial).zfill(4))}_0000.png")
                     imwrite(f"{destination}/labelsTr/case_{s}.png",
                             load(f"{src}/{i}/{j}/ground_truth/left/{n}.npy").astype(uint8))
                     serial += 1
