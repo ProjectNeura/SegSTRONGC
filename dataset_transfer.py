@@ -43,5 +43,5 @@ def transfer(src: str, destination: str) -> None:
 
 
 if __name__ == '__main__':
-    transfer("F:/SharedDatasets/SegSTRONGC_release/SegSTRONGC_release",
-             "F:/SharedDatasets/SegSTRONGC_release/SegSTRONGC_nnunet")
+    transfer("C:/SharedDatasets/SegSTRONGC_release/SegSTRONGC_release",
+             "C:/SharedDatasets/SegSTRONGC_release/SegSTRONGC_nnunet")
