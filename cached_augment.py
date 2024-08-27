@@ -1,9 +1,10 @@
-from os import listdir
+from os import listdir, makedirs
 from os.path import isdir
-from numpy import ndarray
-from augmentation import TransformBase, Smoke
-from cv2 import imread, imwrite
 
+from cv2 import imread, imwrite
+from numpy import ndarray
+
+from augmentation import TransformBase, Smoke, LowBrightness, Blood
 
 Item: type = tuple[str, ndarray]
 
@@ -24,9 +25,14 @@ def augment_item(src: str, transform: TransformBase, branch: str = "") -> Item |
 
 def augment_with_structure(src: str, output_dir: str, transform: TransformBase) -> None:
     for path, img in augment_item(src, transform):
+        makedirs(f"{output_dir}/{path[:path.rfind('/')]}")
         imwrite(f"{output_dir}/{path}", img)
 
 
 if __name__ == '__main__':
     augment_with_structure("C:/SharedDatasets/SegSTRONGC_release/SegSTRONGC_release/val",
                            "C:/SharedDatasets/SegSTRONGC_release/SegSTRONGC_release/smoke", Smoke())
+    augment_with_structure("C:/SharedDatasets/SegSTRONGC_release/SegSTRONGC_release/val",
+                           "C:/SharedDatasets/SegSTRONGC_release/SegSTRONGC_release/lb", LowBrightness())
+    augment_with_structure("C:/SharedDatasets/SegSTRONGC_release/SegSTRONGC_release/val",
+                           "C:/SharedDatasets/SegSTRONGC_release/SegSTRONGC_release/blood", Blood(20))
