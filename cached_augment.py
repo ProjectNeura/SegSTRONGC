@@ -24,8 +24,9 @@ def augment_item(src: str, transform: TransformBase, branch: str = "") -> Item |
 
 
 def augment_with_structure(src: str, output_dir: str, transform: TransformBase) -> None:
+    makedirs(output_dir, exist_ok=True)
     for path, img in augment_item(src, transform):
-        makedirs(f"{output_dir}/{path[:path.rfind('/')]}")
+        makedirs(f"{output_dir}/{path[:path.rfind('/')]}", exist_ok=True)
         imwrite(f"{output_dir}/{path}", img)
 
 
