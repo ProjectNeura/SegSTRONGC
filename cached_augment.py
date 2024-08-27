@@ -11,11 +11,11 @@ Item: type = tuple[str, ndarray]
 
 def augment_item(src: str, transform: TransformBase, branch: str = "") -> Item | list[Item]:
     if not isdir(target := f"{src}/{branch}"):
+        if not target.endswith(".png"):
+            return []
         return f"{branch}", transform(imread(src))
     r = []
     for f in listdir(target):
-        if not f.endswith(".png"):
-            continue
         if isinstance(item := augment_item(src, transform, f"{branch}/{f}"), list):
             r += item
         else:
