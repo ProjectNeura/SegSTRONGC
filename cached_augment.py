@@ -13,7 +13,7 @@ def augment_item(src: str, transform: TransformBase, branch: str = "") -> Item |
     if not isdir(target := f"{src}/{branch}"):
         if not target.endswith(".png"):
             return []
-        return f"{branch}", transform(imread(src))
+        return f"{branch}", transform(imread(target))
     r = []
     for f in listdir(target):
         if isinstance(item := augment_item(src, transform, f"{branch}/{f}"), list):
