@@ -2,32 +2,29 @@ from os import listdir, makedirs
 from os.path import isdir
 
 from cv2 import imread, imwrite
-from numpy import ndarray
 
 from augmentation import TransformBase, Smoke, LowBrightness, Blood
 
-Item: type = tuple[str, ndarray]
 
-
-def augment_item(src: str, transform: TransformBase, branch: str = "") -> Item | list[Item]:
+def get_items(src: str, branch: str = "") -> str | list[str]:
     if not isdir(target := f"{src}/{branch}"):
-        if not target.endswith(".png"):
-            return []
-        return f"{branch}", transform(imread(target))
+        if target.endswith(".png"):
+            return f"{branch}"
+        return []
     r = []
     for f in listdir(target):
-        if isinstance(item := augment_item(src, transform, f"{branch}/{f}"), list):
-            r += item
-        else:
+        if isinstance(item := get_items(src, f"{branch}/{f}"), str):
             r.append(item)
+        else:
+            r += item
     return r
 
 
 def augment_with_structure(src: str, output_dir: str, transform: TransformBase) -> None:
     makedirs(output_dir, exist_ok=True)
-    for path, img in augment_item(src, transform):
+    for path in get_items(src):
         makedirs(f"{output_dir}/{path[:path.rfind('/')]}", exist_ok=True)
-        imwrite(f"{output_dir}/{path}", img)
+        imwrite(f"{output_dir}/{path}", transform(imread(f"{src}/{path}")))
 
 
 if __name__ == '__main__':
