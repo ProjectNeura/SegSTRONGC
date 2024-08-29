@@ -26,9 +26,9 @@ def augment_with_structure(src: str, output_dir: str, transform: TransformBase) 
 
 
 if __name__ == '__main__':
-    augment_with_structure("C:/SharedDatasets/SegSTRONGC_release/SegSTRONGC_release/val",
-                           "C:/SharedDatasets/SegSTRONGC_release/SegSTRONGC_release/smoke", Smoke())
-    augment_with_structure("C:/SharedDatasets/SegSTRONGC_release/SegSTRONGC_release/val",
-                           "C:/SharedDatasets/SegSTRONGC_release/SegSTRONGC_release/lb", LowBrightness())
-    augment_with_structure("C:/SharedDatasets/SegSTRONGC_release/SegSTRONGC_release/val",
-                           "C:/SharedDatasets/SegSTRONGC_release/SegSTRONGC_release/blood", Blood(20))
+    augment_with_structure("S:/SharedDatasets/SegSTRONGC_release/SegSTRONGC_release/val",
+                           "S:/SharedDatasets/SegSTRONGC_release/SegSTRONGC_release/smoke", Smoke())
+    augment_with_structure("S:/SharedDatasets/SegSTRONGC_release/SegSTRONGC_release/val",
+                           "S:/SharedDatasets/SegSTRONGC_release/SegSTRONGC_release/lb", LowBrightness())
+    augment_with_structure("S:/SharedDatasets/SegSTRONGC_release/SegSTRONGC_release/val",
+                           "S:/SharedDatasets/SegSTRONGC_release/SegSTRONGC_release/blood", Blood(20))
