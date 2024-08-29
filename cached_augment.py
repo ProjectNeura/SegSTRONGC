@@ -8,9 +8,7 @@ from augmentation import TransformBase, Smoke, LowBrightness, Blood
 
 def get_items(src: str, branch: str = "") -> str | list[str]:
     if not isdir(target := f"{src}/{branch}"):
-        if target.endswith(".png"):
-            return f"{branch}"
-        return []
+        return f"{branch}" if target.endswith(".png") or target.endswith(".npy") else []
     r = []
     for f in listdir(target):
         if isinstance(item := get_items(src, f"{branch}/{f}"), str):
