@@ -37,9 +37,5 @@ nnUNetv2_plan_and_preprocess -d 1 --verify_dataset_integrity -pl nnUNetPlannerRe
 ### Train
 
 ```shell
-nnUNetv2_train 1 2d 0 -p nnUNetResEncUNetMPlans -device cuda --npz
-nnUNetv2_train 1 2d 1 -p nnUNetResEncUNetMPlans -device cuda --npz
-nnUNetv2_train 1 2d 2 -p nnUNetResEncUNetMPlans -device cuda --npz
-nnUNetv2_train 1 2d 3 -p nnUNetResEncUNetMPlans -device cuda --npz
-nnUNetv2_train 1 2d 4 -p nnUNetResEncUNetMPlans -device cuda --npz
+nnUNetv2_train 1 2d all -p nnUNetResEncUNetMPlans -device cuda
 ```
