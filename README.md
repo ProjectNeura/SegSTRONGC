@@ -39,3 +39,9 @@ nnUNetv2_plan_and_preprocess -d 1 --verify_dataset_integrity -pl nnUNetPlannerRe
 ```shell
 nnUNetv2_train 1 2d all -p nnUNetResEncUNetMPlans -device cuda
 ```
+
+### Predict
+
+```shell
+nnUNetv2_predict -i /workspace/val/smoke_nnunet -o /workspace/val/smoke_predicted -d 1 -c 2d -f 0 --save_probabilities
+```
