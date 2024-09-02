@@ -1,9 +1,11 @@
+from os import makedirs
 from shutil import copyfile
 
 from utils import get_items
 
 
 def rearrange(src: str, output_dir: str) -> None:
+    makedirs(output_dir)
     i = 0
     for path in get_items(src):
         if not path.endswith(".png"):
