@@ -44,4 +44,6 @@ nnUNetv2_train 1 2d all -p nnUNetResEncUNetMPlans -device cuda
 
 ```shell
 nnUNetv2_predict -i /workspace/val/smoke_nnunet -o /workspace/val/smoke_predicted -d 1 -c 2d -p nnUNetResEncUNetMPlans -f all --save_probabilities
+nnUNetv2_predict -i /workspace/val/lb_nnunet -o /workspace/val/lb_predicted -d 1 -c 2d -p nnUNetResEncUNetMPlans -f all --save_probabilities
+nnUNetv2_predict -i /workspace/val/blood_nnunet -o /workspace/val/blood_predicted -d 1 -c 2d -p nnUNetResEncUNetMPlans -f all --save_probabilities
 ```
