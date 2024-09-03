@@ -33,7 +33,7 @@ def evaluate(src: str, val: str, method: Callable[[ndarray, ndarray], float]) ->
 
 
 if __name__ == '__main__':
-    predicted = "lb"
+    predicted = "smoke"
     print("DCS:", evaluate(f"S:/SharedDatasets/SegSTRONGC_release/SegSTRONGC_release/{predicted}_predicted",
                            "S:/SharedDatasets/SegSTRONGC_release/SegSTRONGC_release/val", calculate_dcs))
     print("NSD:", evaluate(f"S:/SharedDatasets/SegSTRONGC_release/SegSTRONGC_release/{predicted}_predicted",
