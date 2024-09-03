@@ -86,7 +86,7 @@ class Smoke(TransformBase):
             smoke_mask[i] = row
         smoke_mask = _repeat(_expand_dims(smoke_mask, -1), 3, 2)
         smoke_mask += smoke_mask[::-1, :, :]
-        smoke_mask += smoke_mask * tex / 255
+        smoke_mask += smoke_mask * tex / 256
         result = _array(img) * (_ones((height, width, 3)) - smoke_mask) + smoke_mask * self._smoke_color
         return _nparray(result)
 

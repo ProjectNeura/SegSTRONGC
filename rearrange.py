@@ -17,7 +17,7 @@ def rearrange(src: str, output_dir: str) -> None:
 if __name__ == '__main__':
     rearrange("S:/SharedDatasets/SegSTRONGC_release/SegSTRONGC_release/smoke",
               "S:/SharedDatasets/SegSTRONGC_release/SegSTRONGC_release/smoke_nnunet")
-    rearrange("S:/SharedDatasets/SegSTRONGC_release/SegSTRONGC_release/lb",
-              "S:/SharedDatasets/SegSTRONGC_release/SegSTRONGC_release/lb_nnunet")
-    rearrange("S:/SharedDatasets/SegSTRONGC_release/SegSTRONGC_release/blood",
-              "S:/SharedDatasets/SegSTRONGC_release/SegSTRONGC_release/blood_nnunet")
+    # rearrange("S:/SharedDatasets/SegSTRONGC_release/SegSTRONGC_release/lb",
+    #           "S:/SharedDatasets/SegSTRONGC_release/SegSTRONGC_release/lb_nnunet")
+    # rearrange("S:/SharedDatasets/SegSTRONGC_release/SegSTRONGC_release/blood",
+    #           "S:/SharedDatasets/SegSTRONGC_release/SegSTRONGC_release/blood_nnunet")
