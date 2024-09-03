@@ -14,9 +14,7 @@ def calculate_dcs(a: ndarray, b: ndarray) -> float:
 
 def calculate_nsd(a: ndarray, b: ndarray) -> float:
     a, b = (a / npmax(a)).astype(int), (b / npmax(b)).astype(int)
-    sum_diff = npsum(npabs(a - b))
-    max_sum = max(npsum(a), npsum(b))
-    return sum_diff / max_sum
+    return npsum(npabs(a - b)) / max(npsum(a), npsum(b))
 
 
 def evaluate(src: str, val: str, method: Callable[[ndarray, ndarray], float]) -> float:
