@@ -1,19 +1,22 @@
 from typing import Callable
 
 from cv2 import imread, cvtColor, COLOR_RGB2GRAY
-from numpy import ndarray, logical_and, load
+from medpy.metric.binary import dc
+from numpy import ndarray, load, abs as npabs, max as npmax, sum as npsum
 from rich.progress import Progress
 
 from utils import get_items
 
 
 def calculate_dcs(a: ndarray, b: ndarray) -> float:
-    a, b = a.astype(bool), b.astype(bool)
-    return float(2 * logical_and(a, b).sum() / (a.sum() + b.sum()))
+    return dc((a / npmax(a)) == 1, (b / npmax(b)) == 1)
 
 
 def calculate_nsd(a: ndarray, b: ndarray) -> float:
-    return abs(a - b).sum() / max(a.sum(), b.sum())
+    a, b = (a / npmax(a)).astype(int), (b / npmax(b)).astype(int)
+    sum_diff = npsum(npabs(a - b))
+    max_sum = max(npsum(a), npsum(b))
+    return sum_diff / max_sum
 
 
 def evaluate(src: str, val: str, method: Callable[[ndarray, ndarray], float]) -> float:
@@ -25,8 +28,7 @@ def evaluate(src: str, val: str, method: Callable[[ndarray, ndarray], float]) ->
         for path in get_items(val):
             if not path.endswith(".npy"):
                 continue
-            r += method(load(f"{val}/{path}"),
-                        cvtColor(imread(f"{src}/case_{str(i).zfill(4)}.png"), COLOR_RGB2GRAY) / 256)
+            r += method(load(f"{val}/{path}"), cvtColor(imread(f"{src}/case_{str(i).zfill(4)}.png"), COLOR_RGB2GRAY))
             i += 1
             progress.update(task, advance=1)
     return r / i
